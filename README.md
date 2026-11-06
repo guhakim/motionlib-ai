@@ -25,10 +25,37 @@ Mux 스트리밍 영상 배경 위에 제목이 한 글자씩 나타나는 히�
 ![AI Automation Hero](screenshots/04-hero-loaded.jpg)
 
 ## 기술 스택
-- [Next.js](https://nextjs.org/) (App Router)
-- Tailwind CSS (추정)
-- [Mux](https://www.mux.com/): 배경 영상 HLS 스트리밍
-- [Vercel](https://vercel.com/): 배포
+- [Next.js 15](https://nextjs.org/) (App Router) + React 19 + TypeScript
+- 직접 작성한 CSS (`app/globals.css`, 컴포넌트 안 스타일)
+- [framer-motion](https://motion.dev/): 애니메이션
+- [hls.js](https://github.com/video-dev/hls.js) + [Mux](https://www.mux.com/): 배경 영상 스트리밍
+- [lucide-react](https://lucide.dev/): 아이콘
+- [Vercel](https://vercel.com/): 배포 (GitHub `main`에 올리면 자동 배포)
+
+## 실행 방법
+```bash
+npm install
+npm run dev
+```
+브라우저에서 http://localhost:3000 을 열면 돼요. 배포용 빌드는 `npm run build`로 확인할 수 있어요.
+
+## 폴더 구조
+```
+app/
+  page.tsx          홈 (갤러리)
+  hero/page.tsx     AI Automation Hero 페이지
+  layout.tsx        공통 레이아웃, 메타 정보
+  globals.css       공통 스타일
+components/
+  motionsites-navbar.tsx         상단 메뉴
+  motionsites-filter-bar.tsx     정렬 탭 + 카테고리 칩
+  motionsites-template-card.tsx  템플릿 카드
+  motionsites-sections.tsx       Backgrounds, Academy 섹션
+  motionsites-logo.tsx           로고
+  ai-automation-hero.tsx         /hero 히어로 섹션
+lib/
+  template-data.ts  카드 목록 데이터
+```
 
 ## 진행 상황
 | 기능 | 상태 |

@@ -1,0 +1,42 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --ms-bg: #0a0a0a;
+  --ms-font: -apple-system, BlinkMacSystemFont, "Inter", system-ui, sans-serif;
+}
+
+html, body {
+  background: var(--ms-bg);
+  color: #fff;
+  font-family: var(--ms-font);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.ms-page {
+  background: var(--ms-bg);
+  min-height: 100vh;
+}
+
+.ms-grid-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px 16px 8px;
+}
+
+.ms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 12px;
+}
+
+.ms-empty {
+  padding: 60px 0;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.35);
+  font-size: 14px;
+}
+
+@media (max-width: 768px) {
+  .ms-grid { grid-template-columns: 1fr; }
+}
