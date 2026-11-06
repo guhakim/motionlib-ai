@@ -6,3 +6,5 @@ out/
 *.tsbuildinfo
 .DS_Store
 .vercel
+# 빌드할 때 scripts/copy-code.mjs 가 만드는 파일
+public/code/
