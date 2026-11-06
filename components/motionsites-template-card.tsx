@@ -73,22 +73,14 @@ function CopyButton({ url, name }: { url: string; name: string }) {
   return (
     <button
       type="button"
+      className="ms-copy"
+      data-state={state}
       onClick={onClick}
       onPointerEnter={() => { loadCode(url).catch(() => {}); }}
       aria-label={label}
       title={label}
-      style={{
-        position: "absolute", left: "12px", bottom: "11px",
-        width: "34px", height: "34px", borderRadius: "8px",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        background: state === "done" ? "rgba(74,222,128,0.12)" : "rgba(255,255,255,0.06)",
-        border: `1px solid ${state === "error" ? "rgba(248,113,113,0.5)" : "rgba(255,255,255,0.12)"}`,
-        color: state === "done" ? "#4ade80" : state === "error" ? "#f87171" : "rgba(255,255,255,0.8)",
-        cursor: "pointer", transition: "background-color .2s, color .2s, border-color .2s",
-        zIndex: 2,
-      }}
     >
-      {state === "done" ? <Check size={16} strokeWidth={2} /> : <Copy size={16} strokeWidth={1.75} />}
+      {state === "done" ? <Check size={20} strokeWidth={2} /> : <Copy size={20} strokeWidth={1.75} />}
     </button>
   );
 }
@@ -96,19 +88,12 @@ function CopyButton({ url, name }: { url: string; name: string }) {
 export function MotionsitesTemplateCard({ tpl }: { tpl: Template }) {
   const Wrapper = tpl.href ? "a" : "div";
   return (
-    <div
-      style={{
-        position: "relative",
-        borderRadius: "10px", overflow: "hidden",
-        border: "1px solid rgba(255,255,255,0.07)",
-        background: "#111",
-      }}
-    >
+    <div className="ms-card">
       <Wrapper
         {...(tpl.href ? { href: tpl.href } : {})}
         style={{ display: "block", cursor: "pointer", textDecoration: "none" }}
       >
-        <div style={{ aspectRatio: "16/9", background: tpl.g, position: "relative", overflow: "hidden" }}>
+        <div className="ms-card-preview" style={{ background: tpl.g }}>
 
           {tpl.href ? (
             /* Live iframe preview — scaled down version of the actual page */
@@ -147,14 +132,19 @@ export function MotionsitesTemplateCard({ tpl }: { tpl: Template }) {
           )}
 
         </div>
-
-        <div style={{ padding: tpl.code ? "10px 12px 10px 56px" : "10px 12px" }}>
-          <div style={{ fontSize: "16px", fontWeight: 700, color: "#fff", marginBottom: "2px" }}>{tpl.name}</div>
-          <div style={{ fontSize: "13px", color: "rgba(255,255,255,0.38)" }}>{tpl.category}</div>
-        </div>
       </Wrapper>
 
-      {tpl.code && <CopyButton url={tpl.code} name={tpl.name} />}
+      <div className="ms-card-foot">
+        <Wrapper
+          {...(tpl.href ? { href: tpl.href } : {})}
+          className="ms-card-title"
+          tabIndex={tpl.href ? -1 : undefined}
+        >
+          <span className="ms-card-name">{tpl.name}</span>
+          <span className="ms-card-cat">{tpl.category}</span>
+        </Wrapper>
+        {tpl.code && <CopyButton url={tpl.code} name={tpl.name} />}
+      </div>
     </div>
   );
 }
