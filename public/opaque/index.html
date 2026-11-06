@@ -1,0 +1,614 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OPAQUE® Projects</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fafafa;--ink:#141414;--mute:#a9a9a9;--line:rgba(0,0,0,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden;background:var(--bg)}
+body{font-family:"Inter","Helvetica Neue",Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit;text-decoration:none}
+.u{font-size:11px;letter-spacing:.02em;text-transform:uppercase}
+
+#gl{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+body.hov #gl{cursor:pointer}
+body.drag #gl{cursor:grabbing}
+
+/* chrome */
+.chrome{transition:opacity .6s}
+body.loading .chrome{opacity:0;pointer-events:none}
+body.opened .chrome:not(nav){opacity:0;pointer-events:none}
+
+nav{position:fixed;left:6px;top:6px;display:flex;gap:3px;z-index:10}
+nav .tile{height:58px;padding:0 10px 10px;display:flex;align-items:flex-end;border-radius:4px;
+  background:rgba(242,242,241,.5);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  box-shadow:inset 0 0 0 1px var(--line);color:var(--mute);width:122px;text-align:left;
+  transition:color .3s,background-color .3s}
+nav .tile:first-child{width:198px;color:var(--ink)}
+nav .tile:hover{color:var(--ink);background:#ececeb}
+nav sup{font-size:.65em;line-height:0;vertical-align:super}
+
+#thumb{position:fixed;top:10px;right:10px;width:58px;height:58px;border-radius:3px;background:#eee center/cover no-repeat;
+  filter:grayscale(1) contrast(1.1);z-index:10}
+
+#chips{position:fixed;right:10px;bottom:62px;display:flex;flex-direction:column;align-items:flex-end;gap:5px;z-index:10}
+#chips button{height:30px;padding:0 13px;border-radius:30px;background:rgba(242,242,241,.9);box-shadow:inset 0 0 0 1px var(--line);
+  font-weight:500;font-size:10px;text-transform:uppercase;letter-spacing:.02em;color:var(--mute);transition:color .3s}
+#chips button:hover,#chips button.active{color:var(--ink)}
+#chips sup{font-size:7px;margin-left:2px}
+
+#mode{position:fixed;right:10px;bottom:10px;padding:3px;border-radius:4px;display:flex;gap:3px;z-index:10;
+  background:rgba(242,242,241,.5);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:inset 0 0 0 1px var(--line)}
+#mode button{height:34px;padding:0 12px;border-radius:3px;color:var(--mute);transition:color .3s,background-color .3s}
+#mode button.active{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
+
+#index{position:fixed;left:10px;top:96px;width:min(420px,40vw);z-index:9;display:none}
+body.indexmode #index{display:block}
+#index .row{display:grid;grid-template-columns:28px 1fr auto auto;gap:14px;padding:8px 0;border-top:1px solid var(--line);
+  color:var(--mute);cursor:pointer;transition:color .3s,padding-left .3s}
+#index .row:last-child{border-bottom:1px solid var(--line)}
+#index .row .nm{font-weight:500;color:var(--ink)}
+#index .row:hover{color:var(--ink);padding-left:12px}
+
+#label{position:fixed;left:0;top:0;font:500 11px "Inter","Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:.02em;
+  color:var(--ink);pointer-events:none;opacity:0;transition:opacity .2s;z-index:20;white-space:nowrap}
+
+/* page */
+#page{position:fixed;inset:0;z-index:8;overflow-y:auto;overscroll-behavior:none;background:var(--bg);display:flex;flex-direction:column;
+  opacity:0;visibility:hidden}
+#page .head{height:50vh;min-height:20rem;margin-top:3.75rem;display:flex;align-items:center;justify-content:center;font-size:11px;line-height:1.0909;flex-shrink:0}
+#page .head .row{padding:5rem 14px;display:flex;justify-content:center}
+#page h1{width:12.5rem;font:500 11px/1.0909 "Inter","Helvetica Neue",Arial,sans-serif;text-transform:uppercase;letter-spacing:.02em}
+#page .head p{max-width:287px;padding:0 2px}
+#page .grid{display:grid;grid-template-columns:1fr 1fr;gap:0;flex-shrink:0}
+#page .blk{position:relative;overflow:hidden;background:#f0f0ef}
+#page .blk.full{grid-column:1 / -1}
+#page .blk img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s cubic-bezier(.215,.61,.355,1)}
+#page .blk img.in{opacity:1}
+#page .next{height:50vh;min-height:20rem;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:14px;
+  font-size:11px;text-transform:uppercase;letter-spacing:.02em;gap:10px;flex-shrink:0}
+#page .next .line{display:flex;width:100%;max-width:calc(8.25rem + 287px)}
+#page .next .line > span:first-child{width:8.25rem;flex-shrink:0;opacity:.3;transition:opacity .5s}
+#page .next a.line:hover > span:first-child{opacity:1}
+
+#loader{position:fixed;inset:0;background:var(--bg);z-index:30;display:flex;align-items:center;justify-content:center}
+#pct{font:500 11px "Inter","Helvetica Neue",Arial,sans-serif}
+
+@media (max-width:760px){
+  nav .tile{width:76px}
+  nav .tile:first-child{width:120px}
+  #index{width:80vw}
+}
+</style>
+</head>
+<body class="loading">
+<canvas id="gl"></canvas>
+
+<nav class="chrome u">
+  <button class="tile" id="home"><span>OPAQUE<sup>®</sup>&nbsp;PROJECTS</span></button>
+  <a class="tile" href="#">Research</a>
+  <a class="tile" href="#">Studio</a>
+  <a class="tile" href="#">Contact</a>
+</nav>
+<div id="thumb" class="chrome"></div>
+<div id="chips" class="chrome"></div>
+<div id="mode" class="chrome u">
+  <button data-m="overview" class="active">Overview</button>
+  <button data-m="index">Index</button>
+</div>
+<div id="index" class="chrome u"></div>
+<div id="label"></div>
+
+<div id="page">
+  <section class="head"><div class="row"><h1 id="pname"></h1><p id="pdesc"></p></div></section>
+  <div class="grid" id="pgrid"></div>
+  <section class="next">
+    <div class="line"><span>Category</span><span id="pcat"></span></div>
+    <a class="line" href="#" id="pnextlink"><span>Next project</span><span id="pnext"></span></a>
+  </section>
+</div>
+
+<div id="loader"><div id="pct">0%</div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script>
+(function(){
+'use strict';
+
+// ---------- data ----------
+const SHEET_URL='https://images.higgs.ai/?default=1&output=webp&url=https%3A%2F%2Fd8j0ntlcm91z4.cloudfront.net%2Fuser_38xzZboKViGWJOttwIXH07lWA1P%2Fhf_20261106_084005_ab0d1fcf-a93f-4e32-a277-1523e1768fbe.png&w=2400&q=88';
+const SW=2336,SH=1744,CW=.2425,CG=.01,RH=.3244,RG=.0134;
+const PROJECTS=[
+  ['Velvet Mouth','Graphic identity',2025],
+  ['Cumulus','Site design',2025],
+  ['No Signal','Video',2024],
+  ['Still Life','3D',2024],
+  ['Memories','AI',2025],
+  ['Shadowplay','Graphic identity',2024],
+  ['Mercury','3D',2025],
+  ['Abyss','Site design',2024],
+  ['Concrete Poem','Graphic identity',2023],
+  ['Prism','AI',2025],
+  ['Headlights','Video',2023],
+  ['Tide','Site design',2024]
+].map(([name,cat,year])=>({name,cat,year}));
+const DESC=[
+  'A campaign built from close-up texture and saturated colour, shot and graded in-house.',
+  'Site design and art direction for an atmospheric weather brand, all soft light and slow motion.',
+  'A night-time film series exploring signal, noise and the glow of the city after dark.',
+  'Still lifes rendered in 3D, mixing studio light with synthetic materials.',
+  'An AI-assisted portrait series about memory, distortion and the faces we half remember.',
+  'Visual identity built from shadow and warm light, for a theatre collective.',
+  'Liquid-metal forms for a product launch, modelled, lit and animated in 3D.',
+  'An immersive site for a deep-sea research lab, glowing in the dark.',
+  'A typographic identity cast in concrete for an architecture biennale.',
+  'Generative colour studies trained on refracted light.',
+  'A short film shot entirely in fog, following two headlights through the night.',
+  'An editorial site for a surf brand, built around the rhythm of the tide.'
+];
+const CATS=['All','Graphic identity','Site design','AI','Video','3D'];
+const REPEAT=3;
+const BLOCKS=[
+  {c:[0,.08,1,.84],o:[1200,1000],full:false,ar:1.2},
+  {c:[.18,0,.64,1],o:[900,1400],full:false,ar:.64},
+  {c:[0,.2,1,.6],o:[1800,1080],full:true,ar:1.67},
+  {c:[.05,.05,.5,.5],o:[1000,1000],full:false,ar:1},
+  {c:[.45,.45,.5,.5],o:[1000,1000],full:false,ar:1}
+];
+
+const $=s=>document.querySelector(s);
+const body=document.body;
+const wrap=(min,max,v)=>{const r=max-min;return ((((v-min)%r)+r)%r)+min;};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+// ---------- renderer / camera ----------
+const canvas=$('#gl');
+const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
+renderer.setClearColor('#fafafa');
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(5,innerWidth/innerHeight,.1,1000);
+function placeCamera(){camera.position.set(0,100/7.5,camera.aspect<1?55:35);camera.lookAt(0,0,0);}
+placeCamera();
+const world=new THREE.Group();
+scene.add(world);
+
+addEventListener('resize',()=>{
+  renderer.setSize(innerWidth,innerHeight);
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  if(!opened) placeCamera();
+});
+
+// ---------- shader ----------
+const VERT=`varying vec2 vUv;
+void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}`;
+const FRAG=`uniform vec2 uMeshSize;uniform vec2 uImageSize;uniform sampler2D uImageTexture;uniform sampler2D uBlurTexture;uniform float uOpacity;
+varying vec2 vUv;
+void main(){
+  vec2 ratio=vec2(
+    min((uMeshSize.x/uMeshSize.y)/(uImageSize.x/uImageSize.y),1.0),
+    min((uMeshSize.y/uMeshSize.x)/(uImageSize.y/uImageSize.x),1.0));
+  vec2 uvCover=vUv*ratio+(1.0-ratio)*0.5;
+  vec4 sharp=texture2D(uImageTexture,uvCover);
+  vec4 blur=texture2D(uBlurTexture,uvCover);
+  vec4 progress=vec4(1.0);
+  float margin=0.15;
+  progress.rgb*=smoothstep(0.0,margin,vUv.x);
+  progress.rgb*=1.0-smoothstep(1.0-margin,1.0,vUv.x);
+  progress.rgb*=smoothstep(0.0,margin,vUv.y);
+  progress.rgb*=1.0-smoothstep(1.0-margin,1.0,vUv.y);
+  blur.a*=0.75;
+  vec4 color=mix(sharp,blur,1.0-progress.r);
+  color.a*=uOpacity;
+  gl_FragColor=color;
+}`;
+
+// ---------- sizes ----------
+const GAP=.375,BE=4/3,SC=1-(BE-1)*.5,H0=1.5*SC,W0=1.5*BE*SC;
+const geo=new THREE.BoxGeometry(H0,W0,.0175);
+const hitMat=new THREE.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false});
+
+// ---------- state ----------
+const cards=[];
+const scroll={current:0,previous:0};
+const mouse={x:-1,y:-1,drag:{x:0,y:0,active:false},on:{x:0,y:0},down:false,sx:0,sy:0};
+let M=0;
+const intro={x:-20};
+const prog={current:0,previous:0};
+let ready=false,opened=null,hovered=null,pageN=0,loaded=false;
+let sheet=null;
+
+// ---------- sheet cutting ----------
+function cellRect(i){
+  const c=i%4,r=Math.floor(i/4);
+  const w=sheet.naturalWidth||sheet.width;
+  const k=w/SW;
+  return {x:c*(CW+CG)*SW*k,y:r*(RH+RG)*SH*k,w:CW*SW*k,h:RH*SH*k};
+}
+function cellCanvas(i,size){
+  const cv=document.createElement('canvas');cv.width=cv.height=size;
+  const R=cellRect(i);
+  cv.getContext('2d').drawImage(sheet,R.x,R.y,R.w,R.h,0,0,size,size);
+  return cv;
+}
+const cropCache={};
+function cropUrl(i,b){
+  const key=i+'_'+b.c.join();
+  if(cropCache[key]) return cropCache[key];
+  const R=cellRect(i),[cx,cy,cw,ch]=b.c,[ow,oh]=b.o;
+  const cv=document.createElement('canvas');cv.width=ow;cv.height=oh;
+  cv.getContext('2d').drawImage(sheet,R.x+cx*R.w,R.y+cy*R.h,cw*R.w,ch*R.h,0,0,ow,oh);
+  let u;try{u=cv.toDataURL('image/jpeg',.85);}catch(e){u='';}
+  return cropCache[key]=u;
+}
+// fallback sheet if the image cannot be loaded or read
+function fallbackSheet(){
+  const cv=document.createElement('canvas');cv.width=SW;cv.height=SH;
+  const g=cv.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,SW,SH);
+  const cols=[['#7a0f14','#d23a3a'],['#7fb2e6','#eef5ff'],['#2a0508','#ff2b3a'],['#d8d8d8','#4a4a4a'],
+              ['#183a6b','#8fb7e8'],['#2b1205','#ff8a2a'],['#5a5f66','#e6e9ee'],['#020611','#3c8cff'],
+              ['#6e6e6e','#c8c8c8'],['#ff5ad1','#5affd7'],['#0c0c0e','#f5eccc'],['#111','#e8e8e8']];
+  for(let i=0;i<12;i++){
+    const c=i%4,r=Math.floor(i/4),x=c*(CW+CG)*SW,y=r*(RH+RG)*SH,w=CW*SW,h=RH*SH;
+    const gr=g.createRadialGradient(x+w*.55,y+h*.45,10,x+w/2,y+h/2,w*.75);
+    gr.addColorStop(0,cols[i][1]);gr.addColorStop(1,cols[i][0]);
+    g.fillStyle=gr;g.fillRect(x,y,w,h);
+  }
+  return cv;
+}
+function loadSheet(){
+  return new Promise(res=>{
+    const img=new Image();
+    img.crossOrigin='anonymous';
+    img.onload=()=>{
+      try{const t=document.createElement('canvas');t.width=t.height=1;const x=t.getContext('2d');x.drawImage(img,0,0,1,1);x.getImageData(0,0,1,1);res(img);}
+      catch(e){res(fallbackSheet());}
+    };
+    img.onerror=()=>res(fallbackSheet());
+    img.src=SHEET_URL;
+  });
+}
+
+async function build(){
+  sheet=await loadSheet();
+  for(let i=0;i<PROJECTS.length;i++){
+    const p=PROJECTS[i];
+    const sharp=cellCanvas(i,512);
+    const blur=cellCanvas(i,24);
+    p.tex=new THREE.CanvasTexture(sharp);
+    p.blur=new THREE.CanvasTexture(blur);
+    p.blur.minFilter=p.blur.magFilter=THREE.LinearFilter;
+    try{p.url=sharp.toDataURL('image/jpeg',.7);}catch(e){p.url='';}
+    prog.current+=100/12;
+    await sleep(30);
+  }
+  prog.current=100;
+  for(let r=0;r<REPEAT;r++){
+    for(let i=0;i<PROJECTS.length;i++){
+      const n=r*PROJECTS.length+i;
+      const p=PROJECTS[i];
+      const mat=new THREE.ShaderMaterial({
+        vertexShader:VERT,fragmentShader:FRAG,transparent:true,
+        uniforms:{
+          uMeshSize:{value:new THREE.Vector2(H0,W0)},
+          uImageSize:{value:new THREE.Vector2(1,1)},
+          uImageTexture:{value:p.tex},
+          uBlurTexture:{value:p.blur},
+          uOpacity:{value:1}
+        }
+      });
+      const mesh=new THREE.Mesh(geo,mat);
+      const hit=new THREE.Mesh(geo,hitMat);
+      hit.scale.x=1.5;
+      const inner=new THREE.Group();inner.add(mesh);
+      const holder=new THREE.Group();holder.add(inner);holder.add(hit);
+      holder.rotation.y=-Math.PI/6;
+      world.add(holder);
+      const t={n,i,mesh,hit,inner,holder,order:n,visK:1,on:true};
+      hit.userData.card=t;
+      cards.push(t);
+    }
+  }
+  buildChrome();
+  loaded=true;
+}
+
+// ---------- layout ----------
+function layout(){
+  M+=(mouse.drag.x-mouse.drag.y-M)*.1;
+  scroll.previous+=(scroll.current-scroll.previous)*.15;
+  const J=scroll.previous/25-M/100+intro.x;
+  const vis=cards.filter(c=>c.on);
+  const N=vis.length||1;
+  const len=Math.max(N,24),F=len*GAP/2,step=len/N;
+  vis.forEach((c,k)=>c.order=k*step);
+  const aspect=camera.aspect;
+  for(const c of cards){
+    c.visK+=((c.on?1:0)-c.visK)*.12;
+    c.mesh.material.uniforms.uOpacity.value=c.visK;
+    if(opened){
+      if(c!==opened) c.holder.visible=false;
+      continue;
+    }
+    const x=wrap(-F,F,(c.order-J)*GAP);
+    const y=-(1-c.visK)*1.2;
+    const z=aspect<1?-x*6:-x*aspect*1.5;
+    c.holder.position.set(x,y,z);
+    c.holder.rotation.x=0;
+    c.holder.rotation.y=-Math.PI/6;
+    c.holder.visible=c.visK>.02&&Math.abs(z)<12.5;
+  }
+  return {J,len};
+}
+function currentJ(){return scroll.previous/25-M/100+intro.x;}
+
+// ---------- hover ----------
+const ray=new THREE.Raycaster();
+const ndc=new THREE.Vector2();
+const label=$('#label'),thumb=$('#thumb');
+function setThumb(n){const p=PROJECTS[n%12];if(p.url) thumb.style.backgroundImage=`url(${p.url})`;}
+function setHover(t){
+  if(t===hovered) return;
+  if(hovered) gsap.to(hovered.inner.position,{x:0,y:0,duration:.5,ease:'expo.out',overwrite:true});
+  hovered=t;
+  if(t){
+    gsap.to(t.inner.position,{x:2/3,y:-.1,duration:.5,ease:'expo.out',overwrite:true});
+    body.classList.add('hov');
+    label.textContent=PROJECTS[t.i].name;
+    label.style.opacity=1;
+    setThumb(t.i);
+  }else{
+    body.classList.remove('hov');
+    label.style.opacity=0;
+  }
+}
+function pick(){
+  if(!ready||opened||mouse.drag.active||mouse.x<0) return;
+  ndc.set(mouse.x/innerWidth*2-1,-(mouse.y/innerHeight)*2+1);
+  ray.setFromCamera(ndc,camera);
+  const targets=cards.filter(c=>c.on&&c.holder.visible).map(c=>c.hit);
+  const hit=ray.intersectObjects(targets,false)[0];
+  setHover(hit?hit.object.userData.card:null);
+}
+
+// ---------- input ----------
+addEventListener('wheel',e=>{
+  if(!ready||opened) return;
+  scroll.current+=(e.deltaY+e.deltaX)/20;
+},{passive:true});
+addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeTile();return;}
+  if(!ready||opened) return;
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') scroll.current+=12;
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp') scroll.current-=12;
+});
+addEventListener('pointermove',e=>{
+  mouse.x=e.clientX;mouse.y=e.clientY;
+  label.style.transform=`translate(${e.clientX+14}px,${e.clientY+12}px)`;
+  if(mouse.down){
+    if(!mouse.drag.active&&Math.hypot(e.clientX-mouse.sx,e.clientY-mouse.sy)>3){
+      mouse.drag.active=true;
+      body.classList.add('drag');
+      gsap.to(world.scale,{x:.825,y:.825,z:.825,duration:.75,ease:'expo.out',overwrite:true});
+    }
+    if(mouse.drag.active){
+      mouse.drag.x=mouse.on.x+e.clientX;
+      mouse.drag.y=mouse.on.y+e.clientY;
+    }
+  }
+});
+canvas.addEventListener('pointerdown',e=>{
+  if(!ready||opened) return;
+  mouse.x=e.clientX;mouse.y=e.clientY;
+  mouse.down=true;mouse.sx=e.clientX;mouse.sy=e.clientY;
+  mouse.on.x=mouse.drag.x-e.clientX;
+  mouse.on.y=mouse.drag.y-e.clientY;
+  try{canvas.setPointerCapture(e.pointerId);}catch(_){}
+  pick();
+});
+function endPointer(e,cancel){
+  if(!mouse.down) return;
+  mouse.down=false;
+  try{canvas.releasePointerCapture(e.pointerId);}catch(_){}
+  if(mouse.drag.active){
+    mouse.drag.active=false;
+    body.classList.remove('drag');
+    gsap.to(world.scale,{x:1,y:1,z:1,duration:.75,ease:'expo.out',overwrite:true});
+  }else if(!cancel&&hovered){
+    openTile(hovered);
+  }
+  if(e.pointerType!=='mouse'){mouse.x=-1;mouse.y=-1;if(!opened) setHover(null);}
+}
+canvas.addEventListener('pointerup',e=>endPointer(e,false));
+canvas.addEventListener('pointercancel',e=>endPointer(e,true));
+canvas.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'&&!mouse.down){mouse.x=-1;setHover(null);}});
+
+// ---------- open / close ----------
+const page=$('#page');
+let pageTweens=[];
+const sq={v:0};
+function setSquare(t,v){
+  const s=1-(1-H0/W0)*v;
+  t.mesh.scale.y=s;
+  t.mesh.material.uniforms.uMeshSize.value.set(H0,W0*s);
+}
+function openTile(t){
+  if(opened) return;
+  opened=t;
+  setHover(null);
+  body.classList.add('opened');
+  cards.forEach(c=>{if(c!==t) c.holder.visible=false;});
+  gsap.killTweensOf(t.inner.position);
+  t.inner.position.set(0,0,0);
+  t.holder.position.y=0;
+  const aspect=camera.aspect;
+  gsap.to(t.holder.position,{x:0,duration:1.25/3*2,ease:'expo.out',
+    onUpdate(){t.holder.position.z=-t.holder.position.x*aspect*1.5;}});
+  gsap.to(t.holder.rotation,{y:0,duration:1.25,ease:'expo.inOut'});
+  sq.v=0;
+  gsap.to(sq,{v:1,duration:1.25,ease:'expo.inOut',onUpdate(){setSquare(t,sq.v);}});
+  gsap.to(camera.position,{x:0,y:0,z:innerWidth<640?35:30,duration:1.25,ease:'expo.inOut',
+    onUpdate(){camera.lookAt(0,0,0);},
+    onComplete(){
+      if(opened!==t) return;
+      fillPage(t.i);
+      page.scrollTop=0;
+      page.style.visibility='visible';
+      pageTweens.push(gsap.fromTo(page,{opacity:0},{opacity:1,duration:.5,ease:'power1.inOut',
+        onComplete(){if(opened===t) t.holder.visible=false;}}));
+    }});
+}
+function closeTile(){
+  if(!opened) return;
+  const t=opened;
+  pageTweens.forEach(tw=>tw.kill());pageTweens=[];
+  gsap.killTweensOf(page);
+  gsap.set(page,{opacity:0,visibility:'hidden'});
+  body.classList.remove('opened');
+  gsap.killTweensOf(t.holder.position);
+  gsap.killTweensOf(t.holder.rotation);
+  gsap.killTweensOf(camera.position);
+  gsap.killTweensOf(sq);
+  setSquare(t,0);
+  t.holder.rotation.y=-Math.PI/6;
+  placeCamera();
+  opened=null;
+  intro.x=-20;
+  gsap.to(intro,{x:0,duration:2,ease:'expo.out',overwrite:true});
+}
+$('#home').addEventListener('click',closeTile);
+
+function fillPage(n){
+  pageN=n;
+  const p=PROJECTS[n];
+  $('#pname').textContent=p.name;
+  $('#pdesc').textContent=DESC[n];
+  $('#pcat').textContent=p.cat;
+  $('#pnext').textContent=PROJECTS[(n+1)%12].name;
+  const grid=$('#pgrid');
+  grid.innerHTML='';
+  BLOCKS.forEach(b=>{
+    const d=document.createElement('div');
+    d.className='blk'+(b.full?' full':'');
+    d.style.aspectRatio=String(b.ar);
+    const img=new Image();
+    img.alt=p.name;
+    img.onload=()=>img.classList.add('in');
+    d.appendChild(img);
+    grid.appendChild(d);
+    img.src=cropUrl(n,b);
+  });
+}
+$('#pnextlink').addEventListener('click',e=>{
+  e.preventDefault();
+  if(!opened) return;
+  pageTweens.push(gsap.to(page,{opacity:0,duration:.25,onComplete(){
+    fillPage((pageN+1)%12);
+    page.scrollTop=0;
+    pageTweens.push(gsap.to(page,{opacity:1,duration:.5,ease:'power1.inOut'}));
+  }}));
+});
+
+// ---------- chrome ----------
+let activeCat='All';
+function applyFilter(cat){
+  activeCat=cat;
+  cards.forEach(c=>c.on=cat==='All'||PROJECTS[c.i].cat===cat);
+  document.querySelectorAll('#chips button').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
+  if(hovered&&!hovered.on) setHover(null);
+}
+function scrollToProject(i){
+  const vis=cards.filter(c=>c.on&&c.i===i);
+  if(!vis.length) return;
+  const J=scroll.current/25-M/100+intro.x;
+  const len=Math.max(cards.filter(c=>c.on).length,24);
+  let best=null,bd=Infinity;
+  for(const c of vis){
+    const target=c.order+Math.round((J-c.order)/len)*len;
+    const d=target-J;
+    if(Math.abs(d)<Math.abs(bd)){bd=d;best=c;}
+  }
+  if(best) scroll.current+=bd*25;
+}
+function nearestCard(i){
+  let pool=cards.filter(c=>c.on&&c.i===i);
+  if(!pool.length){applyFilter('All');pool=cards.filter(c=>c.i===i);}
+  return pool.reduce((a,b)=>Math.abs(b.holder.position.x)<Math.abs(a.holder.position.x)?b:a);
+}
+function buildChrome(){
+  const chips=$('#chips');
+  CATS.forEach(cat=>{
+    const b=document.createElement('button');
+    b.dataset.cat=cat;
+    const count=cat==='All'?PROJECTS.length:PROJECTS.filter(p=>p.cat===cat).length;
+    b.innerHTML=`${cat}<sup>${count}</sup>`;
+    if(cat==='All') b.classList.add('active');
+    b.addEventListener('click',()=>applyFilter(cat));
+    chips.appendChild(b);
+  });
+  const idx=$('#index');
+  PROJECTS.forEach((p,i)=>{
+    const r=document.createElement('div');
+    r.className='row';
+    r.innerHTML=`<span>${String(i+1).padStart(2,'0')}</span><span class="nm"></span><span></span><span>${p.year}</span>`;
+    r.children[1].textContent=p.name;
+    r.children[2].textContent=p.cat;
+    r.addEventListener('mouseenter',()=>{if(opened) return;scrollToProject(i);setThumb(i);});
+    r.addEventListener('click',()=>{if(!ready||opened) return;openTile(nearestCard(i));});
+    idx.appendChild(r);
+  });
+  document.querySelectorAll('#mode button').forEach(b=>b.addEventListener('click',()=>{
+    document.querySelectorAll('#mode button').forEach(x=>x.classList.toggle('active',x===b));
+    body.classList.toggle('indexmode',b.dataset.m==='index');
+  }));
+}
+
+// ---------- loader ----------
+let finished=false;
+const pct=$('#pct');
+function tickLoader(){
+  if(finished) return;
+  prog.previous+=(prog.current-prog.previous)*.1;
+  const v=Math.min(100,Math.round(prog.previous));
+  pct.textContent=v+'%';
+  if(loaded&&prog.current>=100&&v>=100){
+    finished=true;
+    gsap.to(pct,{opacity:0,duration:.5,delay:.25});
+    gsap.to('#loader',{opacity:0,duration:.5,delay:.75,ease:'power1.inOut',onComplete(){
+      $('#loader').remove();
+      body.classList.remove('loading');
+    }});
+    setTimeout(()=>{
+      ready=true;
+      intro.x=-20;
+      gsap.to(intro,{x:0,duration:2,ease:'expo.out'});
+      world.scale.set(.825,.825,.825);
+      gsap.to(world.scale,{x:1,y:1,z:1,duration:1,delay:1.25,ease:'expo.out'});
+      setThumb(4);
+    },750);
+  }
+}
+
+// ---------- loop ----------
+function frame(){
+  requestAnimationFrame(frame);
+  tickLoader();
+  layout();
+  pick();
+  renderer.render(scene,camera);
+}
+requestAnimationFrame(frame);
+build();
+})();
+</script>
+</body>
+</html>

@@ -17,6 +17,7 @@ export interface Template {
 }
 
 export const TEMPLATES: Template[] = [
+  { id: "opaque-stack", name: "Opaque Stack", category: "3D Portfolio", premium: false, copyable: true, href: "/opaque", g: "linear-gradient(135deg,#fafafa,#ececeb,#d9d9d6)" },
   { id: "ai-automation-hero", name: "AI Automation Hero", category: "Hero Section", premium: false, copyable: true, href: "/hero", g: "linear-gradient(135deg,#070612,#0d0a24,#1a1040)" },
   { id: "ember-dsgn", name: "EMBER.dsgn", category: "Hero Section", premium: true, copyable: false, g: "linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)" },
   { id: "aetheris-voyage", name: "Aetheris Voyage", category: "Hero Section", premium: false, copyable: false, g: "linear-gradient(135deg,#0d1117,#1c2526,#1f3d30)" },
