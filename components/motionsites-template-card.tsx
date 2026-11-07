@@ -95,25 +95,16 @@ export function MotionsitesTemplateCard({ tpl }: { tpl: Template }) {
       >
         <div className="ms-card-preview" style={{ background: tpl.g }}>
 
-          {tpl.href ? (
-            /* Live iframe preview — scaled down version of the actual page */
-            <div style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
-              <iframe
-                src={tpl.href}
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  width: "500%",
-                  height: "500%",
-                  transform: "scale(0.2)",
-                  transformOrigin: "top left",
-                  border: "none",
-                }}
-                tabIndex={-1}
-                aria-hidden="true"
-              />
-            </div>
+          {tpl.thumb ? (
+            /* 정지 화면 미리보기. 예전에는 실제 페이지를 iframe으로 띄워서 홈이 매우 느렸어요. */
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={tpl.thumb}
+              alt=""
+              loading="lazy"
+              decoding="async"
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+            />
           ) : (
             /* Mock UI placeholder for non-linked cards */
             <>

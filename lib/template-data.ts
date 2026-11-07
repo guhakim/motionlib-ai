@@ -16,11 +16,13 @@ export interface Template {
   href?: string;
   /** 복사 버튼이 가져올 코드 파일 주소. 있으면 카드에 복사 아이콘이 나와요. */
   code?: string;
+  /** 카드 미리보기 이미지 주소. 없으면 그라데이션 자리표시 화면이 나와요. */
+  thumb?: string;
 }
 
 export const TEMPLATES: Template[] = [
-  { id: "opaque-stack", name: "Opaque Stack", category: "3D Portfolio", premium: false, copyable: true, href: "/opaque", code: "/opaque/index.html", g: "linear-gradient(135deg,#fafafa,#ececeb,#d9d9d6)" },
-  { id: "ai-automation-hero", name: "AI Automation Hero", category: "Hero Section", premium: false, copyable: true, href: "/hero", code: "/code/ai-automation-hero.tsx.txt", g: "linear-gradient(135deg,#070612,#0d0a24,#1a1040)" },
+  { id: "opaque-stack", name: "Opaque Stack", category: "3D Portfolio", premium: false, copyable: true, href: "/opaque", code: "/opaque/index.html", thumb: "/thumbs/opaque.jpg", g: "linear-gradient(135deg,#fafafa,#ececeb,#d9d9d6)" },
+  { id: "ai-automation-hero", name: "AI Automation Hero", category: "Hero Section", premium: false, copyable: true, href: "/hero", code: "/code/ai-automation-hero.tsx.txt", thumb: "/thumbs/hero.jpg", g: "linear-gradient(135deg,#070612,#0d0a24,#1a1040)" },
   { id: "ember-dsgn", name: "EMBER.dsgn", category: "Hero Section", premium: true, copyable: false, g: "linear-gradient(135deg,#1a1a2e,#16213e,#0f3460)" },
   { id: "aetheris-voyage", name: "Aetheris Voyage", category: "Hero Section", premium: false, copyable: false, g: "linear-gradient(135deg,#0d1117,#1c2526,#1f3d30)" },
   { id: "what-package", name: "What Package Fits You", category: "Pricing", premium: true, copyable: true, g: "linear-gradient(135deg,#0a0a0a,#1a0a2e,#2d1b69)" },
