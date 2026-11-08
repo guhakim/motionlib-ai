@@ -27,7 +27,7 @@ body.opened .chrome:not(nav){opacity:0;pointer-events:none}
 
 nav{position:fixed;left:6px;top:6px;display:flex;gap:3px;z-index:10}
 nav .tile{height:58px;padding:0 10px 10px;display:flex;align-items:flex-end;border-radius:4px;
-  background:rgba(242,242,241,.5);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  background:rgba(242,242,241,.88);
   box-shadow:inset 0 0 0 1px var(--line);color:var(--mute);width:122px;text-align:left;
   transition:color .3s,background-color .3s}
 nav .tile:first-child{width:198px;color:var(--ink)}
@@ -44,7 +44,7 @@ nav sup{font-size:.65em;line-height:0;vertical-align:super}
 #chips sup{font-size:7px;margin-left:2px}
 
 #mode{position:fixed;right:10px;bottom:10px;padding:3px;border-radius:4px;display:flex;gap:3px;z-index:10;
-  background:rgba(242,242,241,.5);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:inset 0 0 0 1px var(--line)}
+  background:rgba(242,242,241,.88);box-shadow:inset 0 0 0 1px var(--line)}
 #mode button{height:34px;padding:0 12px;border-radius:3px;color:var(--mute);transition:color .3s,background-color .3s}
 #mode button.active{background:#fff;color:var(--ink);box-shadow:inset 0 0 0 1px var(--line)}
 
@@ -69,8 +69,8 @@ body.indexmode #index{display:block}
 #page .grid{display:grid;grid-template-columns:1fr 1fr;gap:0;flex-shrink:0}
 #page .blk{position:relative;overflow:hidden;background:#f0f0ef}
 #page .blk.full{grid-column:1 / -1}
-#page .blk img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s cubic-bezier(.215,.61,.355,1)}
-#page .blk img.in{opacity:1}
+#page .blk canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .6s cubic-bezier(.215,.61,.355,1)}
+#page .blk canvas.in{opacity:1}
 #page .next{height:50vh;min-height:20rem;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:14px;
   font-size:11px;text-transform:uppercase;letter-spacing:.02em;gap:10px;flex-shrink:0}
 #page .next .line{display:flex;width:100%;max-width:calc(8.25rem + 287px)}
@@ -172,7 +172,7 @@ const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 const canvas=$('#gl');
 const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:false});
 renderer.setClearColor('#fafafa');
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setPixelRatio(Math.min(devicePixelRatio,1.5));
 renderer.setSize(innerWidth,innerHeight);
 const scene=new THREE.Scene();
 const camera=new THREE.PerspectiveCamera(5,innerWidth/innerHeight,.1,1000);
@@ -241,14 +241,17 @@ function cellCanvas(i,size){
   return cv;
 }
 const cropCache={};
-function cropUrl(i,b){
+function cropCanvas(i,b){
   const key=i+'_'+b.c.join();
-  if(cropCache[key]) return cropCache[key];
-  const R=cellRect(i),[cx,cy,cw,ch]=b.c,[ow,oh]=b.o;
-  const cv=document.createElement('canvas');cv.width=ow;cv.height=oh;
-  cv.getContext('2d').drawImage(sheet,R.x+cx*R.w,R.y+cy*R.h,cw*R.w,ch*R.h,0,0,ow,oh);
-  let u;try{u=cv.toDataURL('image/jpeg',.85);}catch(e){u='';}
-  return cropCache[key]=u;
+  let cv=cropCache[key];
+  if(!cv){
+    const R=cellRect(i),[cx,cy,cw,ch]=b.c,[ow,oh]=b.o;
+    cv=document.createElement('canvas');cv.width=ow;cv.height=oh;
+    cv.getContext('2d').drawImage(sheet,R.x+cx*R.w,R.y+cy*R.h,cw*R.w,ch*R.h,0,0,ow,oh);
+    cropCache[key]=cv;
+  }
+  cv.classList.remove('in');
+  return cv;
 }
 // fallback sheet if the image cannot be loaded or read
 function fallbackSheet(){
@@ -323,17 +326,22 @@ async function build(){
 }
 
 // ---------- layout ----------
+// easing that feels the same at 60Hz, 120Hz, or when a frame drops
+let dt=1;
+const ease=k=>1-Math.pow(1-k,dt);
+const visCards=[];
 function layout(){
-  M+=(mouse.drag.x-mouse.drag.y-M)*.1;
-  scroll.previous+=(scroll.current-scroll.previous)*.15;
+  M+=(mouse.drag.x-mouse.drag.y-M)*ease(.1);
+  scroll.previous+=(scroll.current-scroll.previous)*ease(.15);
   const J=scroll.previous/25-M/100+intro.x;
-  const vis=cards.filter(c=>c.on);
-  const N=vis.length||1;
+  visCards.length=0;
+  for(const c of cards) if(c.on) visCards.push(c);
+  const N=visCards.length||1;
   const len=Math.max(N,24),F=len*GAP/2,step=len/N;
-  vis.forEach((c,k)=>c.order=k*step);
+  for(let k=0;k<visCards.length;k++) visCards[k].order=k*step;
   const aspect=camera.aspect;
   for(const c of cards){
-    c.visK+=((c.on?1:0)-c.visK)*.12;
+    c.visK+=((c.on?1:0)-c.visK)*ease(.12);
     c.mesh.material.uniforms.uOpacity.value=c.visK;
     if(opened){
       if(c!==opened) c.holder.visible=false;
@@ -353,6 +361,7 @@ function currentJ(){return scroll.previous/25-M/100+intro.x;}
 
 // ---------- hover ----------
 const ray=new THREE.Raycaster();
+const hitTargets=[];
 const ndc=new THREE.Vector2();
 const label=$('#label'),thumb=$('#thumb');
 function setThumb(n){const p=PROJECTS[n%12];if(p.url) thumb.style.backgroundImage=`url(${p.url})`;}
@@ -375,7 +384,9 @@ function pick(){
   if(!ready||opened||mouse.drag.active||mouse.x<0) return;
   ndc.set(mouse.x/innerWidth*2-1,-(mouse.y/innerHeight)*2+1);
   ray.setFromCamera(ndc,camera);
-  const targets=cards.filter(c=>c.on&&c.holder.visible).map(c=>c.hit);
+  hitTargets.length=0;
+  for(const c of cards) if(c.on&&c.holder.visible) hitTargets.push(c.hit);
+  const targets=hitTargets;
   const hit=ray.intersectObjects(targets,false)[0];
   setHover(hit?hit.object.userData.card:null);
 }
@@ -500,13 +511,13 @@ function fillPage(n){
     const d=document.createElement('div');
     d.className='blk'+(b.full?' full':'');
     d.style.aspectRatio=String(b.ar);
-    const img=new Image();
-    img.alt=p.name;
-    img.onload=()=>img.classList.add('in');
-    d.appendChild(img);
+    const cv=cropCanvas(n,b);
+    cv.setAttribute('role','img');
+    cv.setAttribute('aria-label',p.name);
+    d.appendChild(cv);
     grid.appendChild(d);
-    img.src=cropUrl(n,b);
   });
+  requestAnimationFrame(()=>requestAnimationFrame(()=>grid.querySelectorAll('canvas').forEach(c=>c.classList.add('in'))));
 }
 $('#pnextlink').addEventListener('click',e=>{
   e.preventDefault();
@@ -577,7 +588,7 @@ let finished=false;
 const pct=$('#pct');
 function tickLoader(){
   if(finished) return;
-  prog.previous+=(prog.current-prog.previous)*.1;
+  prog.previous+=(prog.current-prog.previous)*ease(.1);
   const v=Math.min(100,Math.round(prog.previous));
   pct.textContent=v+'%';
   if(loaded&&prog.current>=100&&v>=100){
@@ -599,13 +610,18 @@ function tickLoader(){
 }
 
 // ---------- loop ----------
-function frame(){
+let lastT=0;
+function frame(t){
   requestAnimationFrame(frame);
+  dt=lastT?Math.min((t-lastT)/(1000/60),4):1;
+  lastT=t;
   tickLoader();
   layout();
   pick();
+  if(opened&&!opened.holder.visible) return; // project page fully covers the scene
   renderer.render(scene,camera);
 }
+document.addEventListener('visibilitychange',()=>{lastT=0;});
 requestAnimationFrame(frame);
 build();
 })();

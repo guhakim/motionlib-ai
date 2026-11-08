@@ -29,7 +29,7 @@ export function MotionsitesFilterBar({
     <div style={{
       borderBottom: "1px solid rgba(255,255,255,0.07)",
       position: "sticky", top: "52px",
-      background: "rgba(10,10,10,0.96)", backdropFilter: "blur(16px)",
+      background: "rgba(10,10,10,0.97)",
       zIndex: 40, display: "flex", alignItems: "center",
       padding: "0 16px", gap: "6px", height: "44px", overflowX: "auto",
     }}>

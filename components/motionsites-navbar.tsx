@@ -7,7 +7,7 @@ export function MotionsitesNavBar() {
       padding: "0 16px", height: "52px",
       borderBottom: "1px solid rgba(255,255,255,0.07)",
       position: "sticky", top: 0,
-      background: "rgba(10,10,10,0.96)", backdropFilter: "blur(16px)", zIndex: 50,
+      background: "rgba(10,10,10,0.97)", zIndex: 50,
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <MotionsitesLogo />

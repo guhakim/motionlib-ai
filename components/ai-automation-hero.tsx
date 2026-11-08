@@ -75,7 +75,8 @@ export function AIAutomationHero() {
       const Hls = (mod as any).default;
       if (Hls.isSupported()) {
         // Chrome, Firefox etc — use hls.js
-        hlsInstance = new Hls({ enableWorker: false });
+        // 영상 해석을 별도 작업자에서 해서 화면이 끊기지 않게 하고, 화면 크기보다 큰 화질은 받지 않아요.
+        hlsInstance = new Hls({ enableWorker: true, capLevelToPlayerSize: true, maxBufferLength: 20 });
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const h = hlsInstance as any;
         h.loadSource(HLS_SRC);
