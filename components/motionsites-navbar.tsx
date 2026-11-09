@@ -16,7 +16,7 @@ export function MotionsitesNavBar() {
         </span>
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
+      <div className="ms-nav-links" style={{ display: "flex", alignItems: "center", gap: "2px" }}>
         {(["MCP", "Backgrounds", "Academy", "Restyle", "3D", "Affiliate"] as const).map(label => (
           <a key={label} href="#" style={{
             display: "flex", alignItems: "center", gap: "4px",
@@ -34,8 +34,8 @@ export function MotionsitesNavBar() {
         ))}
       </div>
 
-      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-        <button style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.5)", display: "flex", padding: "6px" }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "8px", flexShrink: 0 }}>
+        <button aria-label="Search" style={{ background: "none", border: "none", cursor: "pointer", color: "rgba(255,255,255,0.5)", display: "flex", padding: "6px" }}>
           <svg width="15" height="15" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
           </svg>

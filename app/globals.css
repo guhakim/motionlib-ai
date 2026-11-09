@@ -94,5 +94,7 @@ html, body {
 }
 
 @media (max-width: 768px) {
-  .ms-grid { grid-template-columns: 1fr; }
+  .ms-grid { grid-template-columns: minmax(0, 1fr); }
+  /* nav links don't fit next to the logo and actions on phones */
+  .ms-nav-links { display: none !important; }
 }
