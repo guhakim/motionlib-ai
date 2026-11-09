@@ -1,0 +1,101 @@
+/* Aethera cinematic hero — scoped under .ae-root */
+.ae-root {
+  --ae-bg: #ffffff;
+  --ae-ink: #000000;
+  --ae-muted: #6f6f6f;
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  overflow: hidden;
+  background: var(--ae-bg);
+  color: var(--ae-ink);
+  font-family: var(--ae-sans), 'Inter', sans-serif;
+}
+.ae-root *, .ae-root *::before, .ae-root *::after { box-sizing: border-box; }
+.ae-root a { text-decoration: none; color: inherit; }
+.ae-root button { font: inherit; cursor: pointer; border: 0; }
+
+/* ---------- Background video ---------- */
+.ae-video-layer {
+  position: absolute; z-index: 0;
+  inset: auto 0 0 0; top: 300px;
+}
+.ae-video {
+  width: 100%; height: 100%; display: block; object-fit: cover;
+  will-change: opacity;
+}
+.ae-video-fade {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(to bottom, var(--ae-bg), transparent, var(--ae-bg));
+}
+
+/* ---------- Navigation ---------- */
+.ae-nav {
+  position: relative; z-index: 10;
+  display: flex; align-items: center; justify-content: space-between;
+  max-width: 80rem; margin: 0 auto;
+  padding: 24px 32px 24px 72px; /* left room for the shared home button */
+}
+.ae-logo {
+  font-family: var(--ae-serif), 'Instrument Serif', serif;
+  font-size: 30px; line-height: 36px; letter-spacing: -0.025em; color: var(--ae-ink) !important;
+}
+.ae-logo sup { font-size: 0.45em; vertical-align: super; margin-left: 1px; }
+.ae-menu { display: none; list-style: none; margin: 0; padding: 0; gap: 32px; }
+.ae-menu a { font-size: 14px; line-height: 20px; color: var(--ae-muted); transition: color .2s; }
+.ae-menu a:hover, .ae-menu a.is-active { color: var(--ae-ink); }
+
+.ae-btn {
+  border-radius: 9999px; background: var(--ae-ink); color: #fff;
+  transition: transform .25s ease;
+}
+.ae-btn:hover { transform: scale(1.03); }
+.ae-btn-sm { padding: 10px 24px; font-size: 14px; line-height: 20px; }
+.ae-btn-lg { padding: 20px 56px; font-size: 16px; line-height: 24px; margin-top: 48px; }
+
+/* ---------- Hero ---------- */
+.ae-hero {
+  position: relative; z-index: 10;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  padding: calc(8rem - 75px) 24px 160px;
+}
+.ae-title {
+  margin: 0; max-width: 80rem;
+  font-family: var(--ae-serif), 'Instrument Serif', serif; font-weight: 400;
+  font-size: 48px; line-height: 0.95; letter-spacing: -2.46px; color: var(--ae-ink);
+}
+.ae-title em { font-style: italic; color: var(--ae-muted); }
+.ae-desc {
+  margin: 32px 0 0; max-width: 42rem;
+  font-size: 16px; line-height: 1.625; color: var(--ae-muted);
+}
+
+@media (max-width: 639px) {
+  .ae-btn-sm { padding: 9px 18px; font-size: 13px; }
+  .ae-nav { padding-right: 20px; }
+}
+@media (min-width: 640px) {
+  .ae-title { font-size: 72px; }
+  .ae-desc { font-size: 18px; }
+}
+@media (min-width: 768px) {
+  .ae-title { font-size: 96px; }
+  .ae-menu { display: flex; }
+}
+
+/* ---------- Animations ---------- */
+@keyframes ae-fade-rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.ae-root .animate-fade-rise { animation: ae-fade-rise .8s ease-out both; }
+.ae-root .animate-fade-rise-delay { animation: ae-fade-rise .8s ease-out .2s both; }
+.ae-root .animate-fade-rise-delay-2 { animation: ae-fade-rise .8s ease-out .4s both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ae-root .animate-fade-rise,
+  .ae-root .animate-fade-rise-delay,
+  .ae-root .animate-fade-rise-delay-2 { animation: none; }
+}

@@ -15,6 +15,7 @@ const HTML_FILES = [
 // 컴포넌트와 CSS 를 한 파일로 합쳐서 복사해요. 복사한 코드 하나로 바로 쓸 수 있어요.
 const COMBINED_FILES = [
   [["components/cozypaws-hero.tsx", "components/cozypaws-hero.css"], "public/code/cozypaws-hero.tsx.txt"],
+  [["components/aethera-hero.tsx", "components/aethera-hero.css"], "public/code/aethera-hero.tsx.txt"],
 ];
 
 mkdirSync("public/code", { recursive: true });

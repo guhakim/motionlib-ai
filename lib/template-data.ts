@@ -21,6 +21,7 @@ export interface Template {
 }
 
 export const TEMPLATES: Template[] = [
+  { id: "aethera-hero", name: "Aethera Cinematic Hero", category: "Hero Section", premium: false, copyable: true, href: "/aethera", code: "/code/aethera-hero.tsx.txt", thumb: "/thumbs/aethera.jpg", g: "linear-gradient(135deg,#ffffff,#f1f1f1,#cfcfcf)" },
   { id: "cozypaws-hero", name: "CozyPaws Pet Store", category: "Ecommerce Hero", premium: false, copyable: true, href: "/cozypaws", code: "/code/cozypaws-hero.tsx.txt", thumb: "/thumbs/cozypaws.jpg", g: "linear-gradient(135deg,#EFFDF0,#d6f5d8,#1a3d1a)" },
   { id: "vasari-vhs-shelf", name: "Vasari VHS Shelf", category: "Hero Section", premium: false, copyable: true, href: "/vasari", code: "/code/vasari.html", thumb: "/thumbs/vasari.jpg", g: "linear-gradient(135deg,#EDEBE6,#e4e1da,#d6d2c8)" },
   { id: "opaque-stack", name: "Opaque Stack", category: "3D Portfolio", premium: false, copyable: true, href: "/opaque", code: "/code/opaque.html", thumb: "/thumbs/opaque.jpg", g: "linear-gradient(135deg,#fafafa,#ececeb,#d9d9d6)" },
