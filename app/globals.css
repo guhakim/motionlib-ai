@@ -19,16 +19,20 @@ html, body {
 }
 
 .ms-grid-container {
-  max-width: 1200px;
+  max-width: 1880px;
   margin: 0 auto;
-  padding: 20px 16px 8px;
+  padding: 20px 24px 8px;
 }
 
+/* 한 줄에 카드 5개. 화면이 좁아지면 4 → 3 → 2 → 1개로 줄어들어요. */
 .ms-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 18px 14px;
 }
+@media (max-width: 1599px) { .ms-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (max-width: 1279px) { .ms-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (max-width: 959px)  { .ms-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* 템플릿 카드: 둥근 미리보기 + 아래 한 줄(제목 · 분류 · 복사 아이콘) */
 .ms-card { position: relative; }
@@ -62,11 +66,17 @@ html, body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  flex-shrink: 0;
+  max-width: 100%;
 }
 .ms-card-cat {
   font-size: 15px;
   color: rgba(255,255,255,0.45);
   white-space: nowrap;
+  /* 자리가 모자라면 분류 글자가 먼저 줄어들어서 템플릿 이름은 끝까지 보여요. */
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .ms-copy {
   flex-shrink: 0;
@@ -93,8 +103,19 @@ html, body {
   font-size: 14px;
 }
 
+/* 카드가 좁아지는 3~5열에서는 제목을 조금 작게 해서 이름이 잘리지 않게 해요. */
+@media (min-width: 960px) {
+  .ms-card-preview { border-radius: 14px; }
+  .ms-card-foot { gap: 8px; padding-top: 10px; }
+  .ms-card-title { gap: 8px; }
+  .ms-card-name { font-size: 16px; }
+  .ms-card-cat { font-size: 13px; }
+  .ms-copy { width: 28px; height: 28px; }
+}
+
 @media (max-width: 768px) {
   .ms-grid { grid-template-columns: minmax(0, 1fr); }
+  .ms-grid-container { padding-left: 16px; padding-right: 16px; }
   /* nav links don't fit next to the logo and actions on phones */
   .ms-nav-links { display: none !important; }
 }
