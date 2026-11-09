@@ -18,6 +18,7 @@ const COMBINED_FILES = [
   [["components/aethera-hero.tsx", "components/aethera-hero.css"], "public/code/aethera-hero.tsx.txt"],
   [["components/bold-portfolio-hero.tsx", "components/bold-portfolio-hero.css"], "public/code/bold-portfolio-hero.tsx.txt"],
   [["components/buzzentic-hero.tsx", "components/buzzentic-hero.css"], "public/code/buzzentic-hero.tsx.txt"],
+  [["components/clearinvoice-hero.tsx", "components/clearinvoice-hero.css"], "public/code/clearinvoice-hero.tsx.txt"],
 ];
 
 mkdirSync("public/code", { recursive: true });
