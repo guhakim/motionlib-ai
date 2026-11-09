@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
+import { KakaoAdfit } from "@/components/kakao-adfit";
 import { MotionsitesNavBar } from "@/components/motionsites-navbar";
 import { MotionsitesFilterBar } from "@/components/motionsites-filter-bar";
 import { MotionsitesTemplateCard } from "@/components/motionsites-template-card";
@@ -29,7 +30,13 @@ export default function Home() {
           <p className="ms-empty">No templates in this category yet.</p>
         ) : (
           <div className="ms-grid">
-            {visible.map(tpl => <MotionsitesTemplateCard key={tpl.id} tpl={tpl} />)}
+            {visible.map((tpl, i) => (
+              <Fragment key={tpl.id}>
+                <MotionsitesTemplateCard tpl={tpl} />
+                {/* 카드 6개 다음에 광고 한 줄 */}
+                {i === 5 && <KakaoAdfit />}
+              </Fragment>
+            ))}
           </div>
         )}
       </div>

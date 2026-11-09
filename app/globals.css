@@ -34,6 +34,15 @@ html, body {
 @media (max-width: 1279px) { .ms-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 959px)  { .ms-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
+/* 카카오 애드핏 광고: 그리드 한 줄 전체를 쓰고 가운데 정렬 */
+.ms-ad-slot {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  padding: 6px 0;
+  overflow: hidden;
+}
+
 /* 템플릿 카드: 둥근 미리보기 + 아래 한 줄(제목 · 분류 · 복사 아이콘) */
 .ms-card { position: relative; }
 .ms-card-preview {
