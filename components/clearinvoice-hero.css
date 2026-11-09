@@ -1,0 +1,150 @@
+/* ClearInvoice SaaS hero — scoped under .ci-root */
+@import url("https://api.fontshare.com/v2/css?f[]=switzer@500,600&display=swap");
+
+.ci-root {
+  position: relative; isolation: isolate;
+  min-height: 100vh;
+  min-height: 100dvh;
+  width: 100%;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  background: #05060a;
+  color: #fff;
+  font-family: var(--ci-body), 'Geist', system-ui, sans-serif;
+}
+.ci-root *, .ci-root *::before, .ci-root *::after { box-sizing: border-box; }
+.ci-root a { color: inherit; text-decoration: none; }
+.ci-root button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+
+/* ---------- Background video (behind everything, no overlay) ---------- */
+.ci-video {
+  position: absolute; inset: 0; z-index: -10;
+  width: 100%; height: 100%; object-fit: cover; pointer-events: none;
+}
+
+/* ---------- Top gradient bar ---------- */
+.ci-topbar {
+  position: relative; z-index: 30; height: 5px; flex-shrink: 0;
+  background: linear-gradient(to right, #ccf, #e7d04c, #31fb78);
+}
+
+/* ---------- Navbar ---------- */
+.ci-header { position: relative; z-index: 30; }
+.ci-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  max-width: 1200px; margin: 0 auto;
+  padding: 18px 20px 18px 72px; /* left room for the shared home button */
+}
+.ci-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Switzer', var(--ci-body), sans-serif; font-weight: 600; font-size: 19px; letter-spacing: -0.02em;
+}
+.ci-logo-mark {
+  width: 32px; height: 32px; border-radius: 9px; display: grid; place-items: center;
+  background: linear-gradient(135deg, #FF3300, #EE7926); color: #fff;
+}
+.ci-links { display: none; list-style: none; margin: 0; padding: 0; gap: 36px; font-size: 15px; }
+.ci-links a { color: rgba(255, 255, 255, .8); transition: color .2s; }
+.ci-links a:hover { color: #fff; }
+.ci-auth { display: none; align-items: center; gap: 8px; font-size: 15px; }
+.ci-signin { padding: 9px 16px; border-radius: 10px; color: rgba(255, 255, 255, .9); transition: background-color .2s; }
+.ci-signin:hover { background: rgba(255, 255, 255, .1); }
+.ci-signup {
+  padding: 9px 18px; border-radius: 10px; font-weight: 500;
+  background: rgba(255, 255, 255, .92); color: #0b0b0f !important; transition: background-color .2s;
+}
+.ci-signup:hover { background: #fff; }
+.ci-burger { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px; }
+.ci-burger:hover { background: rgba(255, 255, 255, .1); }
+
+.ci-dropdown {
+  position: absolute; left: 0; right: 0; top: 100%;
+  display: flex; flex-direction: column; gap: 4px;
+  padding: 12px 20px 20px;
+  background: rgba(8, 9, 14, .92);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, .08);
+}
+.ci-dropdown > a { padding: 12px 4px; font-size: 17px; border-bottom: 1px solid rgba(255, 255, 255, .06); }
+.ci-dropdown-auth { display: flex; gap: 10px; margin-top: 14px; }
+.ci-dropdown-auth a { flex: 1; text-align: center; }
+.ci-dropdown-auth .ci-signin { background: rgba(255, 255, 255, .08); }
+
+/* ---------- Hero ---------- */
+.ci-hero {
+  position: relative; z-index: 10; flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  max-width: 900px; margin: 0 auto; padding: 56px 20px 96px;
+}
+.ci-title {
+  margin: 0;
+  font-family: 'Switzer', var(--ci-body), sans-serif; font-weight: 500;
+  font-size: 40px; line-height: 1.05; letter-spacing: -0.035em;
+}
+.ci-sub {
+  margin: 22px 0 0; max-width: 560px;
+  font-size: 17px; line-height: 1.6; color: rgba(255, 255, 255, .9);
+}
+
+/* ---------- Buttons ---------- */
+.ci-ctas { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; margin-top: 36px; }
+.ci-stroke {
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  border: 1.5px solid rgba(255, 255, 255, .2);
+}
+.ci-stroke-dark { border-color: rgba(0, 0, 0, .05); }
+
+.ci-primary { position: relative; display: inline-flex; border-radius: 12px; }
+.ci-primary-glow {
+  position: absolute; inset: 0; z-index: 0; border-radius: inherit;
+  background: #ea580c; filter: blur(16px); opacity: .2;
+  transition: opacity .3s ease;
+}
+.ci-primary:hover .ci-primary-glow { opacity: .6; }
+.ci-primary-body {
+  position: relative; z-index: 1; overflow: hidden;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 15px 28px; border-radius: inherit;
+  background: linear-gradient(to right, #FF3300, #EE7926);
+  font-size: 16px; font-weight: 500; color: #fff;
+}
+.ci-primary-arrow {
+  display: inline-flex; width: 0; opacity: 0; transform: translateX(-14px);
+  transition: width .3s ease, opacity .3s ease, transform .3s ease, margin .3s ease;
+}
+.ci-primary:hover .ci-primary-arrow { width: 18px; margin-right: 8px; opacity: 1; transform: translateX(0); }
+
+.ci-secondary {
+  position: relative; display: inline-flex; align-items: center;
+  padding: 15px 28px; border-radius: 12px;
+  background: rgba(255, 255, 255, .9); color: #0b0b0f !important;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  font-size: 16px; font-weight: 500;
+  transition: background-color .25s ease;
+}
+.ci-secondary:hover { background: #fff; }
+
+/* ---------- Social proof ---------- */
+.ci-proof { display: flex; align-items: center; gap: 14px; margin-top: 40px; font-size: 15px; color: rgba(255, 255, 255, .9); }
+.ci-proof p { margin: 0; }
+.ci-proof strong { color: #fff; font-weight: 600; }
+.ci-avatars { display: flex; }
+.ci-avatars img {
+  width: 36px; height: 36px; border-radius: 50%; object-fit: cover;
+  border: 2px solid #fff; margin-left: -10px;
+}
+.ci-avatars img:first-child { margin-left: 0; }
+
+@media (max-width: 479px) {
+  .ci-proof { flex-direction: column; gap: 10px; }
+}
+@media (min-width: 640px) {
+  .ci-title { font-size: 52px; }
+  .ci-sub { font-size: 18px; }
+}
+@media (min-width: 900px) {
+  .ci-nav { padding: 20px 32px 20px 80px; }
+  .ci-links, .ci-auth { display: flex; }
+  .ci-burger, .ci-dropdown { display: none; }
+  .ci-title { font-size: 60px; line-height: 1; }
+}

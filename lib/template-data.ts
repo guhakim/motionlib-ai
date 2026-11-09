@@ -21,6 +21,7 @@ export interface Template {
 }
 
 export const TEMPLATES: Template[] = [
+  { id: "clearinvoice-saas", name: "ClearInvoice SaaS Hero", category: "SaaS", premium: false, copyable: true, href: "/clearinvoice", code: "/code/clearinvoice-hero.tsx.txt", thumb: "/thumbs/clearinvoice.jpg", g: "linear-gradient(135deg,#05060a,#1a1030,#FF3300)" },
   { id: "buzzentic-agency", name: "Buzzentic Agency", category: "Agency", premium: false, copyable: true, href: "/buzzentic", code: "/code/buzzentic-hero.tsx.txt", thumb: "/thumbs/buzzentic.jpg", g: "linear-gradient(135deg,#0a0a0a,#2a2a2a,#f8f8f8)" },
   { id: "bold-portfolio-hero", name: "Bold Portfolio Hero", category: "Portfolio", premium: false, copyable: true, href: "/portfolio-hero", code: "/code/bold-portfolio-hero.tsx.txt", thumb: "/thumbs/bold-portfolio.jpg", g: "linear-gradient(180deg,#fd2601,#f37e1c)" },
   { id: "aethera-hero", name: "Aethera Cinematic Hero", category: "Hero Section", premium: false, copyable: true, href: "/aethera", code: "/code/aethera-hero.tsx.txt", thumb: "/thumbs/aethera.jpg", g: "linear-gradient(135deg,#ffffff,#f1f1f1,#cfcfcf)" },
