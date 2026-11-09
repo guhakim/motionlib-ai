@@ -5,11 +5,11 @@ import { useEffect, useRef, useState } from "react";
 // 카카오 애드핏에서 광고단위를 만든 뒤, 받은 광고단위 ID(DAN-로 시작)를 여기에 넣으세요.
 // 비어 있으면 광고 자리는 화면에 나타나지 않아요.
 export const ADFIT_UNITS = {
-  pc: { id: "", width: 728, height: 90 },      // 화면이 넓을 때
-  mobile: { id: "", width: 320, height: 100 }, // 휴대폰 화면
+  pc: { id: "DAN-PdYw4ZF1Fh9q65k3", width: 728, height: 90 },      // 화면이 넓을 때
+  mobile: { id: "DAN-LoQpYFOqKeP2aScJ", width: 320, height: 100 }, // 휴대폰 화면
 };
 
-const ADFIT_SCRIPT = "https://t1.daumcdn.net/kas/static/ba.min.js";
+const ADFIT_SCRIPT = "https://t1.kakaocdn.net/kas/static/ba.min.js";
 
 export function KakaoAdfit() {
   const boxRef = useRef<HTMLDivElement>(null);
