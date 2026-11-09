@@ -21,6 +21,7 @@ export interface Template {
 }
 
 export const TEMPLATES: Template[] = [
+  { id: "buzzentic-agency", name: "Buzzentic Agency", category: "Agency", premium: false, copyable: true, href: "/buzzentic", code: "/code/buzzentic-hero.tsx.txt", thumb: "/thumbs/buzzentic.jpg", g: "linear-gradient(135deg,#0a0a0a,#2a2a2a,#f8f8f8)" },
   { id: "bold-portfolio-hero", name: "Bold Portfolio Hero", category: "Portfolio", premium: false, copyable: true, href: "/portfolio-hero", code: "/code/bold-portfolio-hero.tsx.txt", thumb: "/thumbs/bold-portfolio.jpg", g: "linear-gradient(180deg,#fd2601,#f37e1c)" },
   { id: "aethera-hero", name: "Aethera Cinematic Hero", category: "Hero Section", premium: false, copyable: true, href: "/aethera", code: "/code/aethera-hero.tsx.txt", thumb: "/thumbs/aethera.jpg", g: "linear-gradient(135deg,#ffffff,#f1f1f1,#cfcfcf)" },
   { id: "cozypaws-hero", name: "CozyPaws Pet Store", category: "Ecommerce Hero", premium: false, copyable: true, href: "/cozypaws", code: "/code/cozypaws-hero.tsx.txt", thumb: "/thumbs/cozypaws.jpg", g: "linear-gradient(135deg,#EFFDF0,#d6f5d8,#1a3d1a)" },
