@@ -11,7 +11,7 @@ export function MotionsitesNavBar() {
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
         <MotionsitesLogo />
-        <span style={{ fontSize: "15px", fontWeight: 600, letterSpacing: "-0.02em", color: "#fff" }}>
+        <span style={{ fontSize: "18px", fontWeight: 600, letterSpacing: "-0.02em", color: "#fff" }}>
           motionlib
         </span>
       </div>
@@ -21,12 +21,12 @@ export function MotionsitesNavBar() {
           <a key={label} href="#" style={{
             display: "flex", alignItems: "center", gap: "4px",
             padding: "6px 9px", borderRadius: "6px",
-            fontSize: "13px", color: "rgba(255,255,255,0.65)", textDecoration: "none",
+            fontSize: "15px", color: "rgba(255,255,255,0.65)", textDecoration: "none",
           }}>
             {label}
             {label === "Backgrounds" && (
               <span style={{
-                fontSize: "8px", fontWeight: 700, padding: "1px 4px", borderRadius: "3px",
+                fontSize: "9px", fontWeight: 700, padding: "1px 4px", borderRadius: "3px",
                 background: "linear-gradient(135deg,#a855f7,#ec4899)", color: "#fff", letterSpacing: "0.04em",
               }}>TOP</span>
             )}
@@ -44,13 +44,13 @@ export function MotionsitesNavBar() {
           padding: "5px 14px", borderRadius: "8px",
           border: "1px solid rgba(255,255,255,0.14)",
           background: "#111", color: "#fff",
-          fontSize: "13px", fontWeight: 500, cursor: "pointer", letterSpacing: "-0.01em",
+          fontSize: "15px", fontWeight: 500, cursor: "pointer", letterSpacing: "-0.01em",
         }}>Go Unlimited</button>
         <div style={{
           width: "28px", height: "28px", borderRadius: "50%",
           background: "linear-gradient(135deg,#a855f7,#ec4899)",
           display: "flex", alignItems: "center", justifyContent: "center",
-          fontSize: "10px", fontWeight: 700, color: "#fff", cursor: "pointer", userSelect: "none",
+          fontSize: "12px", fontWeight: 700, color: "#fff", cursor: "pointer", userSelect: "none",
         }}>KG</div>
       </div>
     </nav>

@@ -17,7 +17,7 @@ function TabBtn({ label, active, onClick }: { label: string; active: boolean; on
       padding: "4px 11px", borderRadius: "6px", border: "none",
       background: active ? "rgba(255,255,255,0.1)" : "transparent",
       color: active ? "#fff" : "rgba(255,255,255,0.48)",
-      fontSize: "13px", fontWeight: active ? 500 : 400, cursor: "pointer", flexShrink: 0,
+      fontSize: "15px", fontWeight: active ? 500 : 400, cursor: "pointer", flexShrink: 0,
     }}>{label}</button>
   );
 }
@@ -45,7 +45,7 @@ export function MotionsitesFilterBar({
           borderColor: activeCategory === cat ? "rgba(168,85,247,0.5)" : "rgba(255,255,255,0.08)",
           background: activeCategory === cat ? "rgba(168,85,247,0.1)" : "transparent",
           color: activeCategory === cat ? "#c084fc" : "rgba(255,255,255,0.45)",
-          fontSize: "12px", cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0,
+          fontSize: "14px", cursor: "pointer", whiteSpace: "nowrap", flexShrink: 0,
         }}>{cat}</button>
       ))}
     </div>
