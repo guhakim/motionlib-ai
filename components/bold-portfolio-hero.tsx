@@ -1,4 +1,4 @@
-import { Anton, Inter } from "next/font/google";
+import { Anton, Inter } from "@/lib/google-fonts";
 import { ArrowUpRight } from "lucide-react";
 import "./bold-portfolio-hero.css";
 

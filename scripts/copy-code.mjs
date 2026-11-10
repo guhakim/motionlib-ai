@@ -33,7 +33,9 @@ for (const [from, to] of HTML_FILES) {
   console.log(`copied ${from} -> ${to} (home button removed)`);
 }
 for (const [froms, to] of COMBINED_FILES) {
-  const parts = froms.map(f => `/* ===== ${f} ===== */\n` + readFileSync(f, "utf8"));
+  // 사이트는 글꼴을 lib/google-fonts 에서 가져오지만, 복사한 코드는 원래대로 next/font/google 을 써요.
+  const parts = froms.map(f => `/* ===== ${f} ===== */\n` +
+    readFileSync(f, "utf8").replace(/from "@\/lib\/google-fonts";/g, 'from "next/font/google";'));
   writeFileSync(to, parts.join("\n"));
   console.log(`combined ${froms.join(" + ")} -> ${to}`);
 }

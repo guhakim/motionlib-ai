@@ -1,6 +1,6 @@
 "use client";
 
-import { Inter } from "next/font/google";
+import { Inter } from "@/lib/google-fonts";
 import { motion } from "framer-motion";
 import "./framelix-landing.css";
 
