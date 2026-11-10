@@ -34,12 +34,17 @@ html, body {
 @media (max-width: 1279px) { .ms-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 959px)  { .ms-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
-/* 카카오 애드핏 광고: 그리드 한 줄 전체를 쓰고 가운데 정렬 */
+/* 카카오 애드핏 광고 6개: 템플릿 목록 아래, 넓은 화면에선 한 줄에 2개 */
+.ms-ad-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 28px;
+}
+@media (max-width: 1499px) { .ms-ad-list { grid-template-columns: minmax(0, 1fr); } }
 .ms-ad-slot {
-  grid-column: 1 / -1;
   display: flex;
   justify-content: center;
-  padding: 6px 0;
   overflow: hidden;
 }
 
