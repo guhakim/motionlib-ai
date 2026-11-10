@@ -10,6 +10,7 @@ const FILES = [
 const HTML_FILES = [
   ["public/opaque/index.html", "public/code/opaque.html"],
   ["public/vasari/index.html", "public/code/vasari.html"],
+  ["public/medusa/index.html", "public/code/medusa.html"],
 ];
 
 // 컴포넌트와 CSS 를 한 파일로 합쳐서 복사해요. 복사한 코드 하나로 바로 쓸 수 있어요.
