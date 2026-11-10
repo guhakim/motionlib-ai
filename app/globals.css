@@ -133,3 +133,15 @@ html, body {
   /* nav links don't fit next to the logo and actions on phones */
   .ms-nav-links { display: none !important; }
 }
+
+/* 템플릿 글꼴 연결: 컴포넌트가 쓰는 변수 이름을 사이트 안 글꼴 파일(lib/google-fonts.ts)과 이어 줘요. */
+.fv--bp-sans { --bp-sans: var(--font-inter); }
+.fv--bp-display { --bp-display: var(--font-anton); }
+.fv--cp-sans { --cp-sans: var(--font-inter); }
+.fv--cp-serif { --cp-serif: var(--font-dm-serif-display); }
+.fv--ae-sans { --ae-sans: var(--font-inter); }
+.fv--ae-serif { --ae-serif: var(--font-instrument-serif); }
+.fv--fx-sans { --fx-sans: var(--font-inter); }
+.fv--ci-body { --ci-body: var(--font-geist); }
+.fv--bz-sans { --bz-sans: var(--font-barlow); }
+.fv--bz-serif { --bz-serif: var(--font-instrument-serif); }

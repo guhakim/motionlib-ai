@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Instrument_Serif, Inter } from "next/font/google";
+import { Instrument_Serif, Inter } from "@/lib/google-fonts";
 import "./aethera-hero.css";
 
 const serif = Instrument_Serif({ weight: "400", style: ["normal", "italic"], subsets: ["latin"], variable: "--ae-serif" });

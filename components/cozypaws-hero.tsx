@@ -1,4 +1,4 @@
-import { DM_Serif_Display, Inter } from "next/font/google";
+import { DM_Serif_Display, Inter } from "@/lib/google-fonts";
 import { Search, ShoppingCart, Star, ArrowUpRight, Play, ArrowRight, Plus } from "lucide-react";
 import "./cozypaws-hero.css";
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useEffect, useRef, useState } from "react";
-import { Geist } from "next/font/google";
+import { Geist } from "@/lib/google-fonts";
 import { motion, type Variants } from "framer-motion";
 import { ArrowRight, Menu, X } from "lucide-react";
 import type Hls from "hls.js";

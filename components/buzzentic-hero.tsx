@@ -1,4 +1,4 @@
-import { Barlow, Instrument_Serif } from "next/font/google";
+import { Barlow, Instrument_Serif } from "@/lib/google-fonts";
 import "./buzzentic-hero.css";
 
 const barlow = Barlow({ weight: ["300", "400", "500"], subsets: ["latin"], variable: "--bz-sans" });
