@@ -697,7 +697,7 @@ function loop(now) {
   requestAnimationFrame(loop);
 }
 let frozen = false;
-document.fonts.ready.then(() => hud(playT));
+document.fonts.ready.then(() => { if (lastSec) hud(playT); });
 requestAnimationFrame(loop);
 </script>
 <script src="/home-button.js" defer></script><!-- ms-home-btn -->
