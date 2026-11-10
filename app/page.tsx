@@ -33,11 +33,13 @@ export default function Home() {
             {visible.map(tpl => <MotionsitesTemplateCard key={tpl.id} tpl={tpl} />)}
           </div>
         )}
-        {/* 템플릿 목록 아래에 광고 6개 */}
-        <KakaoAdfitList />
       </div>
       <MotionsitesBackgroundsSection />
       <MotionsitesAcademySection />
+      {/* 페이지 맨 아래에 광고 6개 */}
+      <div className="ms-grid-container">
+        <KakaoAdfitList />
+      </div>
     </div>
   );
 }
