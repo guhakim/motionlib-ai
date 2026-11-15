@@ -55,7 +55,7 @@ export function KakaoAdfitList() {
     <div className="ms-ad-list" ref={listRef} aria-label="광고">
       {ids.map(id => (
         <div key={id} className="ms-ad-slot">
-          <div data-ad-box style={{ width: SIZE.width, minHeight: SIZE.height }} />
+          <div data-ad-box style={{ width: SIZE.width }} />
         </div>
       ))}
     </div>

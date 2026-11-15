@@ -35,20 +35,25 @@ html, body {
 @media (max-width: 959px)  { .ms-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* 카카오 애드핏 300x250 광고 15개: 페이지 맨 아래, 가운데 정렬로 나란히.
-   넓은 화면에선 한 줄에 5개(3줄), 좁아지면 줄 수가 늘고 휴대폰에선 세로로 쌓여요. */
+   넓은 화면에선 한 줄에 5개(3줄), 좁아지면 줄 수가 늘고 휴대폰에선 세로로 쌓여요.
+   광고가 오지 않은 칸은 접혀서, 채워진 광고끼리 빈틈 없이 가운데로 모여요. */
 .ms-ad-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, 300px);
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  align-items: start;
+  align-items: flex-start;
   gap: 20px;
   max-width: 1580px; /* 300 × 5 + 20 × 4 */
   margin: 28px auto 32px;
 }
 .ms-ad-slot {
-  display: flex;
-  justify-content: center;
+  width: 300px;
   overflow: hidden;
+}
+.ms-ad-slot:not(:has(ins.kakao_ad_area)),
+.ms-ad-slot:has(ins.kakao_ad_area[style*="display: none"]),
+.ms-ad-slot:has(ins.kakao_ad_area[style*="display:none"]) {
+  display: none;
 }
 
 /* 템플릿 카드: 둥근 미리보기 + 아래 한 줄(제목 · 분류 · 복사 아이콘) */
