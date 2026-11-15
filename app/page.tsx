@@ -36,7 +36,7 @@ export default function Home() {
       </div>
       <MotionsitesBackgroundsSection />
       <MotionsitesAcademySection />
-      {/* 페이지 맨 아래에 광고 6개 */}
+      {/* 페이지 맨 아래에 300x250 광고 15개 */}
       <div className="ms-grid-container">
         <KakaoAdfitList />
       </div>
