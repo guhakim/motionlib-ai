@@ -34,14 +34,17 @@ html, body {
 @media (max-width: 1279px) { .ms-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
 @media (max-width: 959px)  { .ms-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
-/* 카카오 애드핏 광고 6개: 템플릿 목록 아래, 넓은 화면에선 한 줄에 2개 */
+/* 카카오 애드핏 300x250 광고 15개: 페이지 맨 아래, 가운데 정렬로 나란히.
+   넓은 화면에선 한 줄에 5개(3줄), 좁아지면 줄 수가 늘고 휴대폰에선 세로로 쌓여요. */
 .ms-ad-list {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 28px;
+  grid-template-columns: repeat(auto-fit, 300px);
+  justify-content: center;
+  align-items: start;
+  gap: 20px;
+  max-width: 1580px; /* 300 × 5 + 20 × 4 */
+  margin: 28px auto 32px;
 }
-@media (max-width: 1499px) { .ms-ad-list { grid-template-columns: minmax(0, 1fr); } }
 .ms-ad-slot {
   display: flex;
   justify-content: center;
